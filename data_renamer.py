@@ -1,34 +1,30 @@
-import numpy as np
 import os
 import datetime
-
-"""
-This class is devoted to taking the data you have a renaming it according to VOC PASCAL naming conventions.
-ASSUMPTIONS:
-    1. We already have the VOCdevkit downloaded
-    2. The image dataset we're working with is organized such that each class is in its own directory
-"""
 
 
 class DataRenamer:
     """
-    Initialize the class. dataset_path will be provided by the user, and it is the root directory of the dataset.
-    This root directory only contains subdirectories such that each one of those is contains every image of its
-    corresponding class. E.g. subdirectories named 'Person', 'Car', etc.
+    This class is devoted to taking the data you have a renaming it according to VOC PASCAL naming conventions.
+    ASSUMPTIONS:
+        1. We already have the VOCdevkit downloaded
+        2. The image dataset we're working with is organized such that each class is in its own directory
     """
+
     def __init__(self):
+        """
+        Initialize the class. dataset_path will be provided by the user, and it is the root directory of the dataset.
+        This root directory only contains subdirectories such that each one of those is contains every image of its
+        corresponding class. E.g. subdirectories named 'Person', 'Car', etc.
+        """
         self.dataset_path = input("Enter the root directory of the dataset:\n")
         self.year = str(datetime.datetime.now().year)
 
-    """
-    Rename each image in the dataset given each class of images in the dataset_path.
-    """
     def rename(self):
-        dirs = os.listdir(self.dataset_path)
-        # get rid of hidden files in the list of directories
-        for dir in dirs:
-            if dir[0] == '.':
-                dirs.remove(dir)
+        """
+        Rename each image in the dataset given each class of images in the dataset_path.
+        :return: the path to the root directory and a list of the image classes
+        """
+        dirs = self.get_classes()
         num_dirs = len(dirs)
         last_file_num = 0
         for i in range(num_dirs):
@@ -49,4 +45,17 @@ class DataRenamer:
                 print(new_file_name)
                 os.rename(path + '/' + images[j], path + '/' + new_file_name + ext)
             last_file_num += j + 1
+        return self.dataset_path, dirs
 
+    def get_classes(self):
+        """
+        Get a list of the image classes. These, by assumption, correspond to the subdirectories in the root directory
+        passed by the user to the program.
+        :return: a list of strings corresponding to the images classes in the user's dataset
+        """
+        dirs = os.listdir(self.dataset_path)
+        # get rid of hidden files in the list of directories
+        for directory in dirs:
+            if directory[0] == '.':
+                dirs.remove(directory)
+        return dirs
