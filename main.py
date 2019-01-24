@@ -25,6 +25,7 @@ class Main:
         """
         dataset_path, classes = self.renamer.rename()
         self.data_splitter = data_splitter.DataSplitter(dataset_path, classes)
+        self.data_splitter.split()
 
 
 if __name__ == "__main__":

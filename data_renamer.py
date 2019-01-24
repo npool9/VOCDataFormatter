@@ -30,6 +30,8 @@ class DataRenamer:
         for i in range(num_dirs):
             print("Subdirectory Name:", dirs[i])
             path = self.dataset_path + '/' + dirs[i]
+            print("Rename the subdirectory to lower case for simplicity:", self.dataset_path + '/' + dirs[i].lower())
+            os.rename(path, self.dataset_path + '/' + dirs[i].lower())
             images = os.listdir(path)
             for image in images:
                 if image[0] == '.':
