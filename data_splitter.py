@@ -85,6 +85,7 @@ class DataSplitter:
             else:
                 train_file.write('\n' + image_id)
                 trainval_file.write('\n' + image_id)
+            is_first_line = 0
         is_first_line = 1
         for image_id in self.validation_ids:
             if is_first_line:
@@ -94,15 +95,73 @@ class DataSplitter:
             # assuming that at least one training example image id has been written to trainval.txt already
             # as it should be!
             trainval_file.write('\n' + image_id)
+            is_first_line = 0
         is_first_line = 1
         for image_id in self.testing_ids:
             if is_first_line:
                 test_file.write(image_id)
             else:
                 test_file.write('\n' + image_id)
+            is_first_line = 0
 
-        # TODO: create 4 text files per class with ids in left column and 1 for positive example and -1 for negative
+        # Create 4 text files per class with ids in left column and 1 for positive example and -1 for negative
         #  in right column
+        for c in self.classes:
+            train_file = open(specs_path + c + '_train.txt', 'w')
+            val_file = open(specs_path + c + '_val.txt', 'w')
+            trainval_file = open(specs_path + c + '_trainval.txt', 'w')
+            test_file = open(specs_path + c + '_test.txt', 'w')
+            c_cap = c.capitalize()
+            is_first_line = 1
+            for image_id in self.training_ids:
+                if (image_id in os.listdir(self.dataset_path + '/' + c)
+                        or image_id in os.listdir(self.dataset_path + '/' + c_cap)):
+                    if is_first_line:
+                        train_file.write(image_id + ' 1')
+                        trainval_file.write(image_id + ' 1')
+                    else:
+                        train_file.write('\n' + image_id + ' 1')
+                        trainval_file.write('\n' + image_id + ' 1')
+                else:
+                    if is_first_line:
+                        train_file.write(image_id + ' -1')
+                        trainval_file.write(image_id + ' -1')
+                    else:
+                        train_file.write('\n' + image_id + ' -1')
+                        trainval_file.write('\n' + image_id + ' -1')
+                is_first_line = 0
+            is_first_line = 1
+            for image_id in self.validation_ids:
+                if (image_id in os.listdir(self.dataset_path + '/' + c)
+                        or image_id in os.listdir(self.dataset_path + '/' + c_cap)):
+                    if is_first_line:
+                        val_file.write(image_id + ' 1')
+                        trainval_file.write(image_id + ' 1')
+                    else:
+                        val_file.write('\n' + image_id + ' 1')
+                        trainval_file.write('\n' + image_id + ' 1')
+                else:
+                    if is_first_line:
+                        val_file.write(image_id + ' -1')
+                        trainval_file.write(image_id + ' -1')
+                    else:
+                        val_file.write('\n' + image_id + ' -1')
+                        trainval_file.write('\n' + image_id + ' -1')
+                is_first_line = 0
+            is_first_line = 1
+            for image_id in self.testing_ids:
+                if (image_id in os.listdir(self.dataset_path + '/' + c)
+                        or image_id in os.listdir(self.dataset_path + '/' + c_cap)):
+                    if is_first_line:
+                        test_file.write(image_id + ' 1')
+                    else:
+                        test_file.write('\n' + image_id + ' 1')
+                else:
+                    if is_first_line:
+                        test_file.write(image_id + ' -1')
+                    else:
+                        test_file.write('\n' + image_id + ' -1')
+                is_first_line = 0
 
     def get_object_ids(self):
         """
