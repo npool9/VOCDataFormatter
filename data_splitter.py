@@ -68,7 +68,6 @@ class DataSplitter:
         There will also be 4 additional files per class: <class_name>_train.txt, <class_name>_val.txt,
             <class_name>_trainval.txt, <class_name>_test.txt
         """
-        object_dict = self.get_object_ids()
         kit_path = input('Enter the path your VOCdevkit directory:\n')
         if kit_path.endswith('/'):
             kit_path = kit_path[:-1]
@@ -162,20 +161,3 @@ class DataSplitter:
                     else:
                         test_file.write('\n' + image_id + ' -1')
                 is_first_line = 0
-
-    def get_object_ids(self):
-        """
-        Get lists of ids that correspond to each class (i.e. the positive examples for each class)
-        :return: a dictionary where they key is the class name and the value is the list of its corresponding image ids
-        """
-        object_dict = dict()
-        for c in self.classes:
-            image_ids = []
-            image_class_path = self.dataset_path + '/' + c
-            for image_id in os.listdir(image_class_path):
-                image_ids.append(image_id[:image_id.index('.')])  # don't include file extension
-            # key: class name
-            # value: image_ids
-            # add this pair to the object dictionary
-            object_dict[c.lower()] = image_ids
-        return object_dict
