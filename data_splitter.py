@@ -1,7 +1,7 @@
 import os
 from random import shuffle
 import datetime
-
+import main
 
 class DataSplitter:
     """
@@ -75,6 +75,7 @@ class DataSplitter:
             <class_name>_trainval.txt, <class_name>_test.txt
         """
         kit_path = input('Enter the path your VOCdevkit directory: \n')
+        main.set_kit_path(kit_path)
         if kit_path.endswith('/'):
             kit_path = kit_path[:-1]
         specs_path = kit_path + '/VOC' + self.year + '/ImageSets/Main/'

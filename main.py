@@ -1,5 +1,6 @@
 import data_renamer
 import data_splitter
+import annotation_maker
 
 
 class Main:
@@ -18,6 +19,8 @@ class Main:
         """
         self.renamer = data_renamer.DataRenamer()
         self.data_splitter = None
+        self.kit_path = None
+        self.annotation_maker = None
 
     def begin(self):
         """
@@ -26,6 +29,14 @@ class Main:
         dataset_path, classes = self.renamer.rename()
         self.data_splitter = data_splitter.DataSplitter(dataset_path, classes)
         self.data_splitter.split()
+        self.annotation_maker = annotation_maker.AnnotationMaker(dataset_path, self.kit_path)
+
+    def set_kit_path(self, kit_path):
+        """
+        Simply retrieve the path of the VOCdevkit from the user. This function is called by DataSplitter
+        :param kit_path: a string of the path to the VOCdevkit directory
+        """
+        self.kit_path = kit_path
 
 
 if __name__ == "__main__":
