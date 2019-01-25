@@ -1,5 +1,4 @@
 import os
-import datetime
 
 
 class DataRenamer:
@@ -10,14 +9,16 @@ class DataRenamer:
         2. The image dataset we're working with is organized such that each class is in its own directory
     """
 
-    def __init__(self):
+    def __init__(self, dataset_path, year):
         """
         Initialize the class. dataset_path will be provided by the user, and it is the root directory of the dataset.
         This root directory only contains subdirectories such that each one of those is contains every image of its
         corresponding class. E.g. subdirectories named 'Person', 'Car', etc.
+        :param dataset_path: the path to your dataset
+        :param year: the current year and the year that will go in this file naming convention: VOC<year>
         """
-        self.dataset_path = input("Enter the root directory of the dataset:\n")
-        self.year = str(datetime.datetime.now().year)
+        self.dataset_path = dataset_path
+        self.year = year
 
     def rename(self):
         """
@@ -34,7 +35,7 @@ class DataRenamer:
             os.rename(path, self.dataset_path + '/' + dirs[i].lower())
             images = os.listdir(path)
             for image in images:
-                if image[0] == '.':
+                if image[0] == '.':  # remove hidden files (non-directories)
                     images.remove(image)
             num_images = len(images)
             for j in range(num_images):

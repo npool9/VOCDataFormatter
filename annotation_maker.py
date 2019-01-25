@@ -1,6 +1,6 @@
 import os
-import datetime
-import cv2
+import numpy as np
+from matplotlib.image import imread
 
 
 class AnnotationMaker:
@@ -13,19 +13,21 @@ class AnnotationMaker:
         2. The image dataset we're working with is organized such that each class is in its own directory
     """
 
-    def __init__(self, dataset_path, dev_kit_path):
+    def __init__(self, dataset_path, dev_kit_path, year, annotation_path):
         """
         Initialize the VOC xml annotation-maker
         :param dataset_path: the path of the image dataset
         :param dev_kit_path: the path of VOCdevkit
+        :param year: the current year and the year that will go in this file naming convention: VOC<year>
+        :param annotation_path: the path in the VOCdevkit directory where VOC convention expects annotations to exist
         """
         self.dataset_path = dataset_path
         self.dev_kit_path = dev_kit_path
-        self.year = datetime.datetime.now().year
-        self.annotation_path = '/VOC' + self.year + '/Annotations'
+        self.year = year
+        self.annotation_path = annotation_path
 
     def xml_writer(self, filename, object_class, box, difficult=0, occluded=0, pose='Unspecified', truncated=0,
-                        segmented=0, database='Unknown', im='Unknown'):
+                   segmented=0, database='Unknown', im='Unknown'):
         """
         The writer of the tags that populate each annotation xml file for each image.
         :param filename: the filename of the image (including its extension)
@@ -64,12 +66,16 @@ class AnnotationMaker:
         for c in classes:
             if self.dataset_path.endswith('/'):
                 self.dataset_path = self.dataset_path[:-1]
-            im_files = os.listdir(self.dataset_path + '/' + c)  # note that we lowered the case of subdirectory names
-            for im_file in im_files:
-                image = cv2.imread(self.dataset_path + '/' + c + '/' + im_file)
-                # note our default bounding box implies classification vs detection (the border of the image)
-                bbox = np.array([image.shape[0], 0, image.shape[1], 0])
-                xml = self.xml_writer(im_file, c, bbox)
-                # Now, save the file to the annotation path obeying VOC PASCAL formatting expectations
-                f = open(self.annotation_path + '/' + im_file[:im_file.index('.')] + '.xml', 'w')
-                f.write(xml)
+            if os.path.isdir(self.dataset_path + '/' + c):
+                im_files = os.listdir(self.dataset_path + '/' + c)  # note we lowered the case of subdirectory names
+                for im_file in im_files:
+                    if im_file[0] == '.':
+                        im_files.remove(im_file)  # remove hidden files from the list. They are not images.
+                for im_file in im_files:
+                    image = imread(self.dataset_path + '/' + c + '/' + im_file)
+                    # note our default bounding box implies classification vs detection (the border of the image)
+                    bbox = np.array([image.shape[0], 0, image.shape[1], 0])
+                    xml = self.xml_writer(im_file, c, bbox)
+                    # Now, save the file to the annotation path obeying VOC PASCAL formatting expectations
+                    f = open(self.annotation_path + '/' + im_file[:im_file.index('.')] + '.xml', 'w')
+                    f.write(xml)

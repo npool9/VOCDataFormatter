@@ -1,6 +1,8 @@
 import data_renamer
 import data_splitter
 import annotation_maker
+import datetime
+import os
 
 
 class Main:
@@ -17,19 +19,24 @@ class Main:
         """
         Initialize each component of transforming image dataset in to PASCAL VOC format.
         """
-        self.renamer = data_renamer.DataRenamer()
-        self.data_splitter = None
-        self.kit_path = None
-        self.annotation_maker = None
+        self.dataset_path = input('Enter the path to the root directory of your dataset:\n')
+        self.classes = [c.lower() for c in os.listdir(self.dataset_path)]
+        self.year = str(datetime.datetime.now().year)
+        self.kit_path = input("Enter the path ot your VOCdevkit directory:\n")
+        self.annotation_path = self.kit_path + '/VOC' + self.year + '/Annotations'
+        self.renamer = data_renamer.DataRenamer(self.dataset_path, self.year)
+        self.data_splitter = data_splitter.DataSplitter(self.dataset_path, self.classes, self.year, self.kit_path)
+        self.annotation_maker = annotation_maker.AnnotationMaker(self.dataset_path, self.kit_path, self.year,
+                                                                 self.annotation_path)
 
     def begin(self):
         """
         Run each component of the PASCAL VOC dataset formatter in sequence.
         """
-        dataset_path, classes = self.renamer.rename()
-        self.data_splitter = data_splitter.DataSplitter(dataset_path, classes)
+
+        self.renamer.rename()
         self.data_splitter.split()
-        self.annotation_maker = annotation_maker.AnnotationMaker(dataset_path, self.kit_path)
+        self.annotation_maker.build()
 
     def set_kit_path(self, kit_path):
         """
