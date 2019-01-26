@@ -33,17 +33,16 @@ class Main:
         """
         Run each component of the PASCAL VOC dataset formatter in sequence.
         """
-
+        print("Renaming images to VOC data format...")
         self.renamer.rename()
+        print("Renaming Complete.")
+        print("Splitting the data in to training/validation/test sets and creating text files respectively...")
         self.data_splitter.split()
+        print("Data Splitting Complete.")
+        print("Annotating images...")
         self.annotation_maker.build()
-
-    def set_kit_path(self, kit_path):
-        """
-        Simply retrieve the path of the VOCdevkit from the user. This function is called by DataSplitter
-        :param kit_path: a string of the path to the VOCdevkit directory
-        """
-        self.kit_path = kit_path
+        print("Annotation Complete.")
+        print("VOC PASCAL Data Formatting Complete.")
 
 
 if __name__ == "__main__":
