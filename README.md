@@ -6,7 +6,7 @@ Putting the image data in the format allows the development kit's evaluation fun
 
 #### Assumptions:
 1. Your own image dataset is separated into subdirectories corresponding to the class to which they belong.
-2. You have the VOCdevkit directory downloaded: http://host.robots.ox.ac.uk/pascal/VOC/voc2010/VOCdevkit_08-May-2010.tar
+2. You have the VOCdevkit directory downloaded: http://host.robots.ox.ac.uk/pascal/VOC/voc2010/VOCdevkit_08-May-2010.tar (year shouldn't matter)
     * You do not need the VOC PASCAL dataset provided you have your own dataset. You just need the development kit file system.
 3. There is one object per image.
     * For classification purposes, the "bounding box" is just the border of the entire image.
