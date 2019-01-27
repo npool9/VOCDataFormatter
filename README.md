@@ -19,4 +19,4 @@ The default parameters of this project assume the image classification task. To 
    * Have the outermost list be the essentially a list of images
    * The images can be represented by lists of bounding boxes
    * The bounding boxes should be lists of the form [xmax, xmin, ymax, ymin]
-      ** xml_writer function takes a list of lists as input (i.e. a list of all bounding boxes in the image)
+      * xml_writer function takes a list of lists as input (i.e. a list of all bounding boxes in the image)
