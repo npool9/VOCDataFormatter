@@ -14,9 +14,12 @@ Putting the image data in the format allows the development kit's evaluation fun
     
 #### Object Detection:
 The default parameters of this project assume the image classification task. To perform object detection, some edits need to be made. Here are my recommendations:
-1. Provide your own list of bounding boxes in the form of a list of list of lists structure.
-   * You will have to write your own loop through this data stucture in the annotations_maker.py script.
+1. Provide your own list of bounding boxes in the form of a list of lists of lists structure.
+   * You will have to write your own loop through this data stucture in the annotation_maker.py script.
    * Have the outermost list be the essentially a list of images
    * The images can be represented by lists of bounding boxes
    * The bounding boxes should be lists of the form [xmax, xmin, ymax, ymin]
       * xml_writer function takes a list of lists as input (i.e. a list of all bounding boxes in the image)
+2. Have a list of lists structure of object names portraying a list of images with one or more objects within them.
+   * This should have the same ordering as the list of lists of lists for bounding boxes signified above. 
+   * This edit would again need to be made in annotation_maker.py
