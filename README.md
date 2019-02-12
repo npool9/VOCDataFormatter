@@ -14,7 +14,7 @@ Putting the image data in the format allows the development kit's evaluation fun
     
 #### Object Detection:
 The default parameters of this project assume the **image classification** task. To perform object detection, some edits need to be made. Here are my recommendations:
-1. Provide your own list of bounding boxes in the form of a **list of lists of lists** structure (outermost list: whole dataset; first inner list: images; innermost list: each object within the image).
+1. Provide your own list of bounding boxes in the form of a **list of lists of lists** structure (i.e. a list of images --- each image has a list of objects --- the bounding box of each object is a length-4 list).
    * You will have to write your own loop through this data stucture in the annotation_maker.py script.
    * Have the outermost list be the essentially a list of images
    * The images can be represented by lists of bounding boxes
