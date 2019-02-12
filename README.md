@@ -10,7 +10,7 @@ Putting the image data in the format allows the development kit's evaluation fun
     * You do not need the VOC PASCAL dataset provided you have your own dataset. You just need the development kit file system.
 3. There is one object per image.
     * For classification purposes, the "bounding box" is just the border of the entire image.
-    * These assumptions can be edited in the annotatoin_maker.py script.
+    * These assumptions can be edited in the annotation_maker.py script.
     
 #### Object Detection:
 The default parameters of this project assume the image classification task. To perform object detection, some edits need to be made. Here are my recommendations:
